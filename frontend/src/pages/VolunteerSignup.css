@@ -1,0 +1,173 @@
+.volunteer-page { max-width: 1300px; }
+
+.volunteer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.volunteer-stats { display: flex; gap: 1.5rem; }
+
+.vol-stat { text-align: center; }
+.vol-stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+.vol-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.volunteer-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ─── Section headings ───────────────────────────────────────────────────────── */
+.section-h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.section-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Skills ─────────────────────────────────────────────────────────────────── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.skill-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+  position: relative;
+}
+
+.skill-chip:hover {
+  border-color: rgba(0,212,255,0.3);
+  color: var(--text-primary);
+}
+
+.skill-chip.active {
+  font-weight: 600;
+}
+
+.skill-emoji { font-size: 1rem; }
+
+.skill-check {
+  position: absolute;
+  right: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ─── Form ───────────────────────────────────────────────────────────────────── */
+.form-section { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.form-fields { display: flex; flex-direction: column; gap: 1rem; }
+
+/* ─── Availability ───────────────────────────────────────────────────────────── */
+.avail-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+
+.avail-chip {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-family: var(--font-display);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.avail-chip.active {
+  background: rgba(0,212,255,0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+/* ─── Submit ─────────────────────────────────────────────────────────────────── */
+.submit-card { }
+
+.submit-info { margin-bottom: 1rem; }
+
+.submit-count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-bottom: 0.35rem;
+}
+
+.submit-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.submit-btn { width: 100%; justify-content: center; padding: 0.85rem; }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ─── Success ─────────────────────────────────────────────────────────────────── */
+.success-state {
+  max-width: 520px;
+  margin: 4rem auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.success-icon {
+  width: 80px; height: 80px;
+  border-radius: 20px;
+  background: rgba(0,229,160,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent-emerald);
+}
+
+.success-state h2 {
+  font-size: 1.75rem;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-emerald));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.success-state p { color: var(--text-secondary); line-height: 1.6; }
+
+.success-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+
+@media (max-width: 900px) {
+  .volunteer-layout { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+}

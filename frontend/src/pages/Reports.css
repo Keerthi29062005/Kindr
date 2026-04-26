@@ -1,0 +1,165 @@
+.reports-page {
+  padding: 1.5rem;
+}
+
+/* Header */
+.reports-header {
+  margin-bottom: 1.5rem;
+}
+
+/* Filters */
+.reports-filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+/* Search */
+.search-input-wrap {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.search-input-wrap input {
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(99, 179, 237, 0.2);
+  background: #0f1a2e;
+  color: #e2e8f0;
+}
+
+/* Filter chips */
+.filter-chips {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-chip {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid rgba(99, 179, 237, 0.2);
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filter-chip.active {
+  background: #00d4ff20;
+  color: #00d4ff;
+  border-color: #00d4ff;
+}
+
+/* List */
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Card */
+.report-card {
+  padding: 1rem;
+  border-radius: 12px;
+  background: #0f1a2e;
+  border: 1px solid rgba(99, 179, 237, 0.15);
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.report-card:hover {
+  border-color: rgba(99, 179, 237, 0.35);
+}
+
+/* Header row */
+.report-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Left */
+.report-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.report-type-badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background: #00d4ff20;
+  color: #00d4ff;
+}
+
+/* Main text */
+.report-summary {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Right */
+.report-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Urgency */
+.urgency-ring {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #00d4ff;
+}
+
+/* Expand button */
+.expand-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+/* Details */
+.report-details {
+  margin-top: 1rem;
+}
+
+.detail-divider {
+  height: 1px;
+  background: rgba(99, 179, 237, 0.2);
+  margin: 0.5rem 0 1rem;
+}
+
+/* Needs */
+.detail-needs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.detail-need {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.detail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Empty */
+.reports-empty {
+  text-align: center;
+  color: #94a3b8;
+}

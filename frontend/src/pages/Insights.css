@@ -1,0 +1,53 @@
+/* Insights Page Layout */
+.page {
+  padding: 1.5rem;
+}
+
+/* Title */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary, #e2e8f0);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Grid */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* Card */
+.card {
+  background: #0f1a2e;
+  border: 1px solid rgba(99, 179, 237, 0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 179, 237, 0.3);
+}
+
+/* Card Title */
+.card h3 {
+  font-size: 0.95rem;
+  color: #9ca3af;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Card Text */
+.card p {
+  font-size: 0.9rem;
+  color: #e5e7eb;
+  line-height: 1.5;
+}

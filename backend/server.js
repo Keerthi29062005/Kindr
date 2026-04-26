@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const ADK_URL = "http://localhost:8000/run"; // ADK default endpoint
+const ADK_URL = "https://8000-cs-403735516902-default.cs-asia-southeast1-ajrg.cloudshell.dev/dev-ui/run"; // ADK default endpoint
 
 app.post('/api/analyze', async (req, res) => {
   try {
@@ -32,7 +32,7 @@ ${text}
     });
 
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ error: "AI analysis failed" });
   }
 });
