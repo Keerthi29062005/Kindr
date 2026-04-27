@@ -1,60 +1,68 @@
 import axios from 'axios';
- 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
- 
+
+// Call backend DIRECTLY — no proxy
+const BASE_URL = 'https://5000-cs-403735516902-default.cs-asia-southeast1-ajrg.cloudshell.dev/api';
+
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 60000, // 60s for AI calls
+  timeout: 60000,
+  withCredentials: true,   // ← required for Cloud Shell auth to pass through
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
- 
-// ─── Reports ──────────────────────────────────────────────────────────────────
+
 export const analyzeReport = async ({ text, location, reportType }) => {
-  const payload = {
+  const { data } = await api.post('/analyze', {
     text,
     location: location || 'Unknown',
     reportType: reportType || 'General'
-  };
-
-  const { data } = await api.post('/analyze', payload, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
   return data;
 };
- 
+
 export const getAllReports = async () => {
   const { data } = await api.get('/reports');
   return data.reports || [];
 };
- 
-// ─── Dashboard Needs ──────────────────────────────────────────────────────────
+
 export const getDashboardNeeds = async () => {
   const { data } = await api.get('/needs');
   return data;
 };
- 
-// ─── Volunteers ───────────────────────────────────────────────────────────────
+
 export const registerVolunteer = async (volunteerData) => {
   const { data } = await api.post('/volunteers', volunteerData);
   return data;
 };
- 
+
 export const getAllVolunteers = async () => {
   const { data } = await api.get('/volunteers');
   return data.volunteers || [];
 };
- 
-// ─── Matching ─────────────────────────────────────────────────────────────────
+
 export const matchVolunteer = async ({ volunteerSkills, volunteerLocation, volunteerId }) => {
   const { data } = await api.post('/match', { volunteerSkills, volunteerLocation, volunteerId });
   return data;
 };
- 
-// ─── Insights ─────────────────────────────────────────────────────────────────
+
 export const getInsights = async () => {
   const { data } = await api.post('/insights');
-  return data.insights;
+ let rawContent = data.insights;
+
+  // 1. Check if it's a string containing markdown backticks
+  if (typeof rawContent === 'string' && rawContent.includes('```json')) {
+    // 2. Remove the ```json and ``` markers
+    const cleanJson = rawContent
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+    
+    // 3. Convert the string into a real Object
+    return JSON.parse(cleanJson);
+  }
+console.log(rawContent);
+  return rawContent;
 };
- 
+
 export default api;

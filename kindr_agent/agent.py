@@ -44,6 +44,10 @@ Guidelines:
 - Use numbers where possible
 - Think like this is a real crisis
 - Avoid generic AI phrases
+- Avoid assigning all problems as Critical unless justified
 - Prioritize actionable insights over explanation
+- Include urgency timeframe for each need
+- NEVER invent population numbers unless explicitly mentioned
+- If unknown, estimate conservatively and state "estimated based on context"
 """
 )

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
   Upload, FileText, Image, File, Loader, CheckCircle,
-  AlertCircle, MapPin, Tag, Zap, ChevronDown
+  AlertCircle, MapPin, Tag, Zap
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { analyzeReport } from '../services/api';
@@ -16,6 +16,7 @@ export default function UploadReport() {
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
   const [location, setLocation] = useState('');
+  const [isOther, setIsOther] = useState(false); // Track if 'Other' is selected
   const [reportType, setReportType] = useState('Field Survey');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -46,7 +47,7 @@ export default function UploadReport() {
       return;
     }
     if (!location) {
-      toast.error('Please select a location');
+      toast.error('Please select or enter a location');
       return;
     }
 
@@ -107,9 +108,7 @@ export default function UploadReport() {
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Paste your field report, survey responses, or community observations here...
-
-Example: 'Water scarcity is severe in blocks 4-7. Over 500 families are affected. Children are missing school to fetch water from 2km away. Local health center is overwhelmed with diarrhea cases due to contaminated water.'"
+                placeholder="Paste your field report, survey responses, or community observations here..."
                 rows={10}
                 style={{ resize: 'vertical', lineHeight: 1.7 }}
               />
@@ -144,19 +143,12 @@ Example: 'Water scarcity is severe in blocks 4-7. Over 500 families are affected
                       {isDragActive ? 'Drop it here!' : 'Drag & drop your report'}
                     </p>
                     <p className="dropzone-sub">Images (JPG/PNG), PDFs, or text files • Max 10MB</p>
-                    <p className="dropzone-sub" style={{ color: 'var(--accent-cyan)', marginTop: '0.5rem' }}>
-                      OCR powered by Google Vision API
-                    </p>
                   </div>
                 )}
               </div>
               {file?.type.startsWith('image/') && (
                 <div className="image-preview-container">
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt="Preview"
-                    className="image-preview"
-                  />
+                  <img src={URL.createObjectURL(file)} alt="Preview" className="image-preview" />
                 </div>
               )}
             </div>
@@ -166,15 +158,56 @@ Example: 'Water scarcity is severe in blocks 4-7. Over 500 families are affected
           <div className="grid-2" style={{ marginTop: '1.25rem' }}>
             <div>
               <label><MapPin size={12} style={{ display: 'inline', marginRight: '4px' }} />Location</label>
-              <select value={location} onChange={(e) => setLocation(e.target.value)}>
-                <option value="">Select area...</option>
-                {LOCATIONS.map(l => <option key={l}>{l}</option>)}
-              </select>
+              
+              {!isOther ? (
+                <select 
+                  value={location} 
+                  onChange={(e) => {
+                    if (e.target.value === 'Other') {
+                      setIsOther(true);
+                      setLocation(''); // Clear to let user type fresh
+                    } else {
+                      setLocation(e.target.value);
+                    }
+                  }}
+                >
+                  <option value="">Select area...</option>
+                  {LOCATIONS.map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
+              ) : (
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Enter custom location..."
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    autoFocus
+                    style={{ paddingRight: '30px' }}
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => { setIsOther(false); setLocation(''); }}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--text-muted)',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
             </div>
+
             <div>
               <label><Tag size={12} style={{ display: 'inline', marginRight: '4px' }} />Report Type</label>
               <select value={reportType} onChange={(e) => setReportType(e.target.value)}>
-                {REPORT_TYPES.map(t => <option key={t}>{t}</option>)}
+                {REPORT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
           </div>
@@ -198,17 +231,15 @@ Example: 'Water scarcity is severe in blocks 4-7. Over 500 families are affected
             <div className="results-empty">
               <div className="empty-icon"><Zap size={40} /></div>
               <p>AI analysis results will appear here</p>
-              <p className="page-subtitle">Vertex AI will extract needs, urgency scores, and recommendations</p>
             </div>
           )}
 
           {loading && (
             <div className="results-loading">
               <div className="loading-steps">
-                {['Reading document...', 'Running OCR...', 'Calling Vertex AI...', 'Extracting needs...', 'Scoring urgency...'].map((step, i) => (
+                {['Reading document...', 'Running OCR...', 'Extracting needs...', 'Scoring urgency...'].map((step, i) => (
                   <div key={step} className="loading-step" style={{ animationDelay: `${i * 0.8}s` }}>
-                    <Loader size={13} className="spin" />
-                    {step}
+                    <Loader size={13} className="spin" /> {step}
                   </div>
                 ))}
               </div>
@@ -217,10 +248,9 @@ Example: 'Water scarcity is severe in blocks 4-7. Over 500 families are affected
 
           {result && (
             <div className="results-content">
-              {/* Summary */}
               <div className="result-section">
                 <div className="result-header">
-                  <CheckCircle size={16} color="var(--accent-emerald)" />
+                  <CheckCircle size={16} color="#00e5a0" />
                   <h3>Analysis Complete</h3>
                   <div className="urgency-badge">
                     Urgency: <strong style={{ color: getUrgencyColor(result.urgencyScore) }}>{result.urgencyScore}/10</strong>
@@ -229,59 +259,20 @@ Example: 'Water scarcity is severe in blocks 4-7. Over 500 families are affected
                 <p className="result-summary">{result.summary}</p>
               </div>
 
-              {/* Needs */}
               <div className="result-section">
                 <h3 className="section-title">Extracted Needs ({result.needs?.length})</h3>
                 <div className="needs-grid">
                   {result.needs?.map((need, i) => (
                     <div key={i} className="need-card" style={{ borderColor: `${severityColor[need.severity]}30` }}>
                       <div className="need-card-top">
-                        <span className="need-category" style={{ color: severityColor[need.severity] }}>
-                          {need.category}
-                        </span>
-                        <span className={`badge badge-${need.severity?.toLowerCase()}`}>
-                          {need.severity}
-                        </span>
+                        <span className="need-category" style={{ color: severityColor[need.severity] }}>{need.category}</span>
+                        <span className={`badge badge-${need.severity?.toLowerCase()}`}>{need.severity}</span>
                       </div>
                       <p className="need-desc">{need.description}</p>
-                      {need.estimatedAffected && (
-                        <p className="need-affected">~{need.estimatedAffected.toLocaleString()} people affected</p>
-                      )}
-                      {need.requiredSkills?.length > 0 && (
-                        <div className="skill-tags">
-                          {need.requiredSkills.map(s => <span key={s} className="tag">{s}</span>)}
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* Recommendations */}
-              {result.recommendedActions?.length > 0 && (
-                <div className="result-section">
-                  <h3 className="section-title">Recommended Actions</h3>
-                  <div className="actions-list">
-                    {result.recommendedActions.map((action, i) => (
-                      <div key={i} className="action-item">
-                        <span className="action-num">{i + 1}</span>
-                        {action}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Volunteers needed */}
-              {result.volunteerRequirements && (
-                <div className="volunteer-req">
-                  <AlertCircle size={14} />
-                  <span>
-                    <strong>{result.volunteerRequirements.urgentCount} volunteers</strong> needed urgently
-                    with skills: {result.volunteerRequirements.skills?.join(', ')}
-                  </span>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -299,14 +290,13 @@ function getUrgencyColor(score) {
 
 function getDemoResult() {
   return {
-    summary: 'Critical water shortage affecting 500+ families in the area with cascading health and education impacts. Immediate intervention required.',
+    summary: 'Critical water shortage affecting 500+ families. Immediate intervention required.',
     urgencyScore: 9,
     needs: [
-      { category: 'Water', description: 'Acute water shortage — no clean water access within 2km', severity: 'Critical', estimatedAffected: 2500, requiredSkills: ['Logistics', 'Infrastructure'], urgencyRank: 1 },
-      { category: 'Medical', description: 'Rising diarrhea and waterborne disease cases', severity: 'High', estimatedAffected: 300, requiredSkills: ['Medical', 'Nursing'], urgencyRank: 2 },
-      { category: 'Education', description: 'Children missing school to collect water', severity: 'Medium', estimatedAffected: 200, requiredSkills: ['Teaching'], urgencyRank: 3 },
+      { category: 'Water', description: 'Acute water shortage — no clean water access within 2km', severity: 'Critical' },
+      { category: 'Medical', description: 'Rising diarrhea and waterborne disease cases', severity: 'High' },
     ],
-    recommendedActions: ['Deploy water tankers immediately', 'Set up ORS distribution points', 'Coordinate with municipal water board'],
-    volunteerRequirements: { urgentCount: 15, skills: ['Medical', 'Logistics', 'Teaching'] },
+    recommendedActions: ['Deploy water tankers immediately', 'Set up ORS distribution points'],
+    volunteerRequirements: { urgentCount: 15, skills: ['Medical', 'Logistics'] },
   };
 }

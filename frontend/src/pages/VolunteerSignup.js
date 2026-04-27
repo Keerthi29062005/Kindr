@@ -37,7 +37,7 @@ export default function VolunteerSignup() {
         : [...f.skills, skillId],
     }));
   };
-
+const [volunteerCount, setVolunteerCount] = useState(47);
   const toggleAvailability = (a) => {
     setForm(f => ({
       ...f,
@@ -48,8 +48,15 @@ export default function VolunteerSignup() {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || form.skills.length === 0) {
-      toast.error('Name, email, and at least one skill are required');
+    if (!form.name || !form.email || !form.phone || form.skills.length === 0) {
+      toast.error('Name, email, phone number and at least one skill are required');
+      setLoading(true);
+
+    // Simulating an API call
+    setTimeout(() => {
+      setVolunteerCount(prev => prev + 1);
+      setLoading(false);
+    }, 1000);
       return;
     }
 
@@ -103,7 +110,7 @@ export default function VolunteerSignup() {
         </div>
         <div className="volunteer-stats">
           <div className="vol-stat">
-            <span className="vol-stat-num">47</span>
+            <span className="vol-stat-num">{volunteerCount}</span>
             <span className="vol-stat-label">Active volunteers</span>
           </div>
           <div className="vol-stat">
@@ -169,7 +176,7 @@ export default function VolunteerSignup() {
               </div>
               <div className="grid-2">
                 <div>
-                  <label>Phone</label>
+                  <label>Phone *</label>
                   <input
                     value={form.phone}
                     onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
