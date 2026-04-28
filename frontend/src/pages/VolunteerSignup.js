@@ -48,8 +48,8 @@ const [volunteerCount, setVolunteerCount] = useState(47);
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.phone || form.skills.length === 0) {
-      toast.error('Name, email, phone number and at least one skill are required');
+    if (!form.name || !form.email || !form.phone || !form.availability || form.skills.length === 0) {
+      toast.error('Name, email, phone number and at least one skill are required. Also please choose avaliability');
       setLoading(true);
 
     // Simulating an API call
